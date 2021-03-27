@@ -1,19 +1,19 @@
 module.exports = function(app, swig) {
-    app.get("/autores", function(req, res) {
-        let autores = [{
-            "nombre": "Freddy Mercury",
-            "grupo": "Queen",
-            "rol": "cantante"
-        }, {
-            "nombre": "Jimi Hendrix",
-            "grupo": "Band of Gypsys",
-            "rol": "guitarrista"
-        } , {
-            "nombre": "Jon Lord",
-            "grupo": "Deep Purple",
-            "rol": "teclista"
-        }];
+    let autores = [{
+        "nombre": "Freddy Mercury",
+        "grupo": "Queen",
+        "rol": "cantante"
+    }, {
+        "nombre": "Jimi Hendrix",
+        "grupo": "Band of Gypsys",
+        "rol": "guitarrista"
+    } , {
+        "nombre": "Jon Lord",
+        "grupo": "Deep Purple",
+        "rol": "teclista"
+    }];
 
+    app.get("/autores", function(req, res) {
         let respuesta = swig.renderFile('views/autores.html', {
             autores : autores
         });
@@ -24,6 +24,13 @@ module.exports = function(app, swig) {
         let roles = ["cantante", "batería", "guitarrista", "bajista", "teclista"];
         let respuesta = swig.renderFile('views/autores-agregar.html', {
             roles : roles
+        });
+        res.send(respuesta);
+    });
+
+    app.get('/autores/filtrar/:rol', function(req, res) {
+        let respuesta = swig.renderFile('views/autores.html', {
+            autores : autores.filter(autor => autor.rol === req.params.rol)
         });
         res.send(respuesta);
     });
