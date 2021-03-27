@@ -21,8 +21,9 @@ module.exports = function(app, swig) {
     });
 
     app.get('/autores/agregar', function (req, res) {
+        let roles = ["cantante", "batería", "guitarrista", "bajista", "teclista"];
         let respuesta = swig.renderFile('views/autores-agregar.html', {
-
+            roles : roles
         });
         res.send(respuesta);
     });
@@ -34,15 +35,15 @@ module.exports = function(app, swig) {
     app.post("/autor", function(req, res) {
         let respuesta = "";
 
-        if (req.body.nombre != null && req.body.nombre != "")
+        if (req.body.nombre != null && req.body.nombre !== "")
             respuesta += 'Nombre: ' + req.body.nombre + '<br>';
         else
             respuesta += 'Nombre no enviado en la petición' + '<br>';
-        if (req.body.grupo != null && req.body.grupo != "")
+        if (req.body.grupo != null && req.body.grupo !== "")
             respuesta += 'Grupo: ' + req.body.grupo + '<br>';
         else
             respuesta += 'Grupo no enviado en la petición' + '<br>';
-        if (req.body.rol != null && req.body.rol != "")
+        if (req.body.rol != null && req.body.rol !== "")
             respuesta += 'Rol: ' + req.body.rol + '<br>';
         else
             respuesta += 'Rol no enviado en la petición' + '<br>';
