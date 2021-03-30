@@ -1,4 +1,4 @@
-module.exports = function(app, swig, mongo) {
+module.exports = function(app, swig, gestorBD) {
     let autores = [{
         "nombre": "Freddy Mercury",
         "grupo": "Queen",
@@ -64,19 +64,11 @@ module.exports = function(app, swig, mongo) {
             rol : req.body.rol
         }
         // Conectarse
-        mongo.MongoClient.connect(app.get('db'), function(err, db) {
-            if (err) {
-                res.send("Error de conexión: " + err);
+        gestorBD.insertarAutor(autor, function(id){
+            if (id == null) {
+                res.send("Error al insertar autor");
             } else {
-                let collection = db.collection('autores');
-                collection.insertOne(autor, function(err, result) {
-                    if (err) {
-                        res.send("Error al insertar " + err);
-                    } else {
-                        res.send("Agregado id: "+ result.ops[0]._id);
-                    }
-                    db.close();
-                });
+                res.send("Agregado el autor ID: " + id);
             }
         });
     });
