@@ -1,4 +1,4 @@
-module.exports = function(app, swig) {
+module.exports = function(app, swig, mongo) {
     let autores = [{
         "nombre": "Freddy Mercury",
         "grupo": "Queen",
@@ -40,6 +40,7 @@ module.exports = function(app, swig) {
     });
 
     app.post("/autor", function(req, res) {
+        /**
         let respuesta = "";
 
         if (req.body.nombre != null && req.body.nombre !== "")
@@ -56,5 +57,27 @@ module.exports = function(app, swig) {
             respuesta += 'Rol no enviado en la petición' + '<br>';
 
         res.send(respuesta);
+        **/
+        let autor = {
+            nombre : req.body.nombre,
+            grupo : req.body.grupo,
+            rol : req.body.rol
+        }
+        // Conectarse
+        mongo.MongoClient.connect(app.get('db'), function(err, db) {
+            if (err) {
+                res.send("Error de conexión: " + err);
+            } else {
+                let collection = db.collection('autores');
+                collection.insertOne(autor, function(err, result) {
+                    if (err) {
+                        res.send("Error al insertar " + err);
+                    } else {
+                        res.send("Agregado id: "+ result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        });
     });
 };
