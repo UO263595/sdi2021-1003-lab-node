@@ -34,9 +34,22 @@ routerUsuarioSession.use(function(req, res, next) {
     }
 });
 
+// routerUsuarioSessionError
+var routerUsuarioSessionError = express.Router();
+routerUsuarioSessionError.use(function(req, res, next) {
+    console.log("routerUsuarioSessionError");
+    if ( req.session.usuario ) {
+        // dejamos correr la petición
+        next();
+    } else {
+        res.send("ERROR: el usuario debe estar autenticado");
+    }
+});
+
 //Aplicar routerUsuarioSession
 app.use("/canciones/agregar",routerUsuarioSession);
 app.use("/publicaciones",routerUsuarioSession);
+app.use("/comentarios/:cancion_id",routerUsuarioSessionError);
 
 //routerAudios
 let routerAudios = express.Router();
@@ -68,6 +81,7 @@ app.set('crypto',crypto);
 require("./routes/rusuarios.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
 require("./routes/rcanciones.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
 require("./routes/rautores.js")(app, swig, gestorBD); // (app, param1, param2, etc.)
+require("./routes/rcomentarios.js")(app, swig, gestorBD);
 
 // Lanzar el servidor
 app.listen(app.get('port'), function() {
