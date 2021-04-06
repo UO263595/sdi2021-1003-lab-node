@@ -64,7 +64,7 @@ module.exports = function(app, swig, gestorBD) {
             rol : req.body.rol
         }
         // Conectarse
-        gestorBD.insertarAutor(autor, function(id){
+        gestorBD.insertarAutor(autor, function(id) {
             if (id == null) {
                 res.send("Error al insertar autor");
             } else {

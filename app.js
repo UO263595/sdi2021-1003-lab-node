@@ -29,7 +29,6 @@ routerUsuarioSession.use(function(req, res, next) {
     // dejamos correr la petición
         next();
     } else {
-        console.log("va a : "+req.session.destino)
         res.redirect("/identificarse");
     }
 });
@@ -59,7 +58,7 @@ routerAudios.use(function(req, res, next) {
     let idCancion = path.basename(req.originalUrl, '.mp3');
     gestorBD.obtenerCanciones(
         {"_id": mongo.ObjectID(idCancion) }, function (canciones) {
-            if(req.session.usuario && canciones[0].autor == req.session.usuario ){
+            if(req.session.usuario && canciones[0].autor === req.session.usuario) {
                 next();
             } else {
                 res.redirect("/tienda");
@@ -68,6 +67,24 @@ routerAudios.use(function(req, res, next) {
 });
 //Aplicar routerAudios
 app.use("/audios/",routerAudios);
+
+//routerComentarios
+let routerComentarios = express.Router();
+routerComentarios.use(function(req, res, next) {
+    console.log("routerComentarios");
+    let path = require('path');
+    let idComentario = path.basename(req.originalUrl);
+    gestorBD.obtenerComentarios(
+        {"_id": mongo.ObjectID(idComentario) }, function (comentarios) {
+            if(req.session.usuario && comentarios[0].autor === req.session.usuario) {
+                next();
+            } else {
+                res.send("ERROR: el usuario debe ser el autor del comentario");
+            }
+        })
+});
+//Aplicar routerComentarios
+app.use("/comentario/borrar/:id",routerComentarios);
 
 app.use(express.static('public'));
 

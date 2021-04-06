@@ -142,7 +142,7 @@ module.exports = function(app, swig, gestorBD) {
         }
         gestorBD.modificarCancion(criterio, cancion, function(result) {
             if (result == null) {
-                res.send("Error al modificar ");
+                res.send("Error al modificar");
             } else {
                 paso1ModificarPortada(req.files, id, function (result) {
                     if( result == null) {

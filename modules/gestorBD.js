@@ -140,5 +140,18 @@ module.exports = {
                 });
             }
         });
+    },
+    eliminarComentario : function(comentario, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                let collection = db.collection('comentarios');
+                collection.deleteOne(comentario)
+                    .then(() => funcionCallback(true))
+                    .catch(() => funcionCallback(null));
+            }
+            db.close();
+        });
     }
 };
