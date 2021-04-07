@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block titulo %} Mis canciones favoritas {% endblock %}
+
+{% block contenido_principal %}
+<h2>Mis canciones favoritas</h2>
+
+<!-- Agregar Canción -->
+<div class="row text-right"></div>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Título</th>
+            <th>Precio</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cancionFavorita in cancionesFavoritas %}
+        <tr>
+            <td>{{ cancionFavorita.nombre }}</td>
+            <td>{{ cancionFavorita.precio }} €</td>
+            <td>
+                <a href="/favoritos/eliminar/{{ cancionFavorita._id.toString() }}">Eliminar de favoritas</a><br>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>Precio total:</td>
+            <td>{{ precioTotal }} €</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
