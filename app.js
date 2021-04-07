@@ -50,6 +50,8 @@ app.use("/canciones/agregar",routerUsuarioSession);
 app.use("/publicaciones",routerUsuarioSession);
 app.use("/comentarios/:cancion_id",routerUsuarioSessionError);
 app.use("/favoritos",routerUsuarioSession);
+app.use("/cancion/comprar",routerUsuarioSession);
+app.use("/compras",routerUsuarioSession);
 
 //routerAudios
 let routerAudios = express.Router();
@@ -58,13 +60,24 @@ routerAudios.use(function(req, res, next) {
     let path = require('path');
     let idCancion = path.basename(req.originalUrl, '.mp3');
     gestorBD.obtenerCanciones(
-        {"_id": mongo.ObjectID(idCancion) }, function (canciones) {
-            if(req.session.usuario && canciones[0].autor === req.session.usuario) {
-                next();
-            } else {
-                res.redirect("/tienda");
-            }
-        })
+    {"_id": mongo.ObjectID(idCancion) }, function (canciones) {
+        if(req.session.usuario && canciones[0].autor === req.session.usuario) {
+            next();
+        } else {
+            let criterio = {
+                usuario : req.session.usuario,
+                cancionId : mongo.ObjectID(idCancion)
+            };
+
+            gestorBD.obtenerCompras(criterio ,function(compras){
+                if (compras != null && compras.length > 0 ){
+                    next();
+                } else {
+                    res.redirect("/tienda");
+                }
+            });
+        }
+    })
 });
 //Aplicar routerAudios
 app.use("/audios/",routerAudios);
