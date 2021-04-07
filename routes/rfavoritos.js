@@ -7,7 +7,7 @@ module.exports = function(app, swig, gestorBD) {
                 res.send("Error al recuperar la canción.");
             } else {
                 req.session.cancionesFavoritas.push(canciones[0]);
-                res.send("Canción añadida a favoritos");
+                res.redirect("/favoritos");
             }
         });
     });
@@ -35,7 +35,7 @@ module.exports = function(app, swig, gestorBD) {
                 res.send("Error al recuperar la canción.");
             } else {
                 req.session.cancionesFavoritas = req.session.cancionesFavoritas.filter(cancion => cancion._id.toString() !== canciones[0]._id.toString());
-                res.send("Canción eliminada de favoritos");
+                res.redirect("/favoritos");
             }
         });
     });

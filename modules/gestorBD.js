@@ -165,7 +165,7 @@ module.exports = {
             } else {
                 let collection = db.collection('comentarios');
                 collection.deleteOne(comentario)
-                    .then(() => funcionCallback(true))
+                    .then(() => funcionCallback(comentario))
                     .catch(() => funcionCallback(null));
             }
             db.close();

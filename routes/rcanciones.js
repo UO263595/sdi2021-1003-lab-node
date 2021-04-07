@@ -62,7 +62,7 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id) };
         gestorBD.obtenerCanciones(criterio,function(canciones) {
             if ( canciones == null ){
-                res.send(respuesta);
+                res.send("ERROR: no se ha podido recuperar la canción");
             } else {
                 let respuesta = swig.renderFile('views/bcancionModificar.html',
                     {
@@ -77,7 +77,7 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = {"_id" : gestorBD.mongo.ObjectID(req.params.id) };
         gestorBD.eliminarCancion(criterio,function(canciones){
             if ( canciones == null ){
-                res.send(respuesta);
+                res.send("ERROR: no se ha podido recuperar la canción");
             } else {
                 res.redirect("/publicaciones");
             }
@@ -132,7 +132,7 @@ module.exports = function(app, swig, gestorBD) {
                                     if (err) {
                                         res.send("Error al subir el audio");
                                     } else {
-                                        res.send("Agregada id: "+ id);
+                                        res.redirect("/publicaciones");
                                     }
                                 });
                             }
@@ -159,7 +159,7 @@ module.exports = function(app, swig, gestorBD) {
                     if( result == null) {
                         res.send("Error en la modificación");
                     } else {
-                        res.send("Modificado");
+                        res.redirect("/publicaciones");
                     }
                 });
             }

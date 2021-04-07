@@ -40,24 +40,6 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.post("/autor", function(req, res) {
-        /**
-        let respuesta = "";
-
-        if (req.body.nombre != null && req.body.nombre !== "")
-            respuesta += 'Nombre: ' + req.body.nombre + '<br>';
-        else
-            respuesta += 'Nombre no enviado en la petición' + '<br>';
-        if (req.body.grupo != null && req.body.grupo !== "")
-            respuesta += 'Grupo: ' + req.body.grupo + '<br>';
-        else
-            respuesta += 'Grupo no enviado en la petición' + '<br>';
-        if (req.body.rol != null && req.body.rol !== "")
-            respuesta += 'Rol: ' + req.body.rol + '<br>';
-        else
-            respuesta += 'Rol no enviado en la petición' + '<br>';
-
-        res.send(respuesta);
-        **/
         let autor = {
             nombre : req.body.nombre,
             grupo : req.body.grupo,
@@ -68,7 +50,7 @@ module.exports = function(app, swig, gestorBD) {
             if (id == null) {
                 res.send("Error al insertar autor");
             } else {
-                res.send("Agregado el autor ID: " + id);
+                res.redirect('/autores');
             }
         });
     });

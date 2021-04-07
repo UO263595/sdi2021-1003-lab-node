@@ -5,7 +5,7 @@ module.exports = function(app, swig, gestorBD) {
             if (result == null) {
                 res.send("Error al eliminar el comentario");
             } else {
-                res.send("Comentario eliminado");
+                res.redirect("/cancion/"+result.cancion_id);
             }
         });
     });
@@ -20,7 +20,7 @@ module.exports = function(app, swig, gestorBD) {
             if (id == null) {
                 res.send("Error al insertar comentario");
             } else {
-                res.send("Agregado el comentario ID: " + id);
+                res.redirect("/cancion/"+result.cancion_id);
             }
         });
     });
