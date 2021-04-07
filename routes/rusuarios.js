@@ -43,9 +43,9 @@ module.exports = function(app, swig, gestorBD) {
 
         gestorBD.insertarUsuario(usuario, function(id) {
             if (id == null){
-                res.send("Error al insertar el usuario");
+                res.redirect("/registrarse?mensaje=Error al registrar usuario");
             } else {
-                res.redirect("/identificarse");
+                res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
             }
         });
     });
@@ -60,7 +60,7 @@ module.exports = function(app, swig, gestorBD) {
         gestorBD.obtenerUsuarios(criterio, function(usuarios) {
             if (usuarios == null || usuarios.length == 0) {
                 req.session.usuario = null;
-                res.send("ERROR: Ha ocurrido un problema en la identificación");
+                res.redirect("/identificarse"+"?mensaje=Email o password incorrecto"+"&tipoMensaje=alert-danger ");
             } else {
                 req.session.usuario = usuarios[0].email;
                 req.session.cancionesFavoritas = [];
