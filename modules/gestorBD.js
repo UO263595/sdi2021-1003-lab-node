@@ -188,7 +188,7 @@ module.exports = {
             }
         });
     },
-    obtenerCompras : function(criterio,funcionCallback){
+    obtenerCompras : function(criterio,funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
