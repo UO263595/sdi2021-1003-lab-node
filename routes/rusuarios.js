@@ -22,7 +22,10 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { autor : req.session.usuario };
         gestorBD.obtenerCanciones(criterio, function(canciones) {
             if (canciones == null) {
-                res.send("Error al listar ");
+                let respuesta = swig.renderFile('views/error.html', {
+                    mensaje : "Error al listar"
+                });
+                res.send(respuesta);
             } else {
                 let respuesta = swig.renderFile('views/bpublicaciones.html',
                     {

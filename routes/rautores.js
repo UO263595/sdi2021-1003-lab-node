@@ -48,7 +48,10 @@ module.exports = function(app, swig, gestorBD) {
         // Conectarse
         gestorBD.insertarAutor(autor, function(id) {
             if (id == null) {
-                res.send("Error al insertar autor");
+                let respuesta = swig.renderFile('views/error.html', {
+                    mensaje : "Error al insertar autor"
+                });
+                res.send(respuesta);
             } else {
                 res.redirect('/autores');
             }

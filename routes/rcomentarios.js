@@ -3,7 +3,10 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id) };
         gestorBD.eliminarComentario(criterio, function(result) {
             if (result == null) {
-                res.send("Error al eliminar el comentario");
+                let respuesta = swig.renderFile('views/error.html', {
+                    mensaje : "Error al eliminar el comentario"
+                });
+                res.send(respuesta);
             } else {
                 res.redirect("/cancion/"+result.cancion_id);
             }
@@ -18,7 +21,10 @@ module.exports = function(app, swig, gestorBD) {
 
         gestorBD.insertarComentario(comentario, function(id) {
             if (id == null) {
-                res.send("Error al insertar comentario");
+                let respuesta = swig.renderFile('views/error.html', {
+                    mensaje : "Error al insertar el comentario"
+                });
+                res.send(respuesta);
             } else {
                 res.redirect("/cancion/"+result.cancion_id);
             }

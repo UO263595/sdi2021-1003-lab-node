@@ -4,7 +4,10 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.cancion_id) };
         gestorBD.obtenerCanciones(criterio,function(canciones) {
             if (canciones == null) {
-                res.send("Error al recuperar la canción.");
+                let respuesta = swig.renderFile('views/error.html', {
+                    mensaje : "Error al recuperar la canción"
+                });
+                res.send(respuesta);
             } else {
                 req.session.cancionesFavoritas.push(canciones[0]);
                 res.redirect("/favoritos");
@@ -32,7 +35,10 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.cancion_id) };
         gestorBD.obtenerCanciones(criterio,function(canciones) {
             if (canciones == null) {
-                res.send("Error al recuperar la canción.");
+                let respuesta = swig.renderFile('views/error.html', {
+                    mensaje : "Error al recuperar la canción"
+                });
+                res.send(respuesta);
             } else {
                 req.session.cancionesFavoritas = req.session.cancionesFavoritas.filter(cancion => cancion._id.toString() !== canciones[0]._id.toString());
                 res.redirect("/favoritos");
