@@ -4,10 +4,11 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.cancion_id) };
         gestorBD.obtenerCanciones(criterio,function(canciones) {
             if (canciones == null) {
-                let respuesta = swig.renderFile('views/error.html', {
-                    mensaje : "Error al recuperar la canción"
-                });
-                res.send(respuesta);
+                req.session.errores = {
+                    mensaje : "Error al recuperar la canción",
+                    tipoMensaje : "alert-danger"
+                }
+                res.redirect("/favoritos");
             } else {
                 req.session.cancionesFavoritas.push(canciones[0]);
                 res.redirect("/favoritos");
@@ -26,7 +27,8 @@ module.exports = function(app, swig, gestorBD) {
         let respuesta = swig.renderFile('views/canciones-favoritas.html',
             {
                 cancionesFavoritas : req.session.cancionesFavoritas,
-                precioTotal : precioTotal
+                precioTotal : precioTotal,
+                errores : req.session.errores
             });
         res.send(respuesta);
     });
@@ -35,10 +37,11 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.cancion_id) };
         gestorBD.obtenerCanciones(criterio,function(canciones) {
             if (canciones == null) {
-                let respuesta = swig.renderFile('views/error.html', {
-                    mensaje : "Error al recuperar la canción"
-                });
-                res.send(respuesta);
+                req.session.errores = {
+                    mensaje : "Error al recuperar la canción",
+                    tipoMensaje : "alert-danger"
+                }
+                res.redirect("/favoritos");
             } else {
                 req.session.cancionesFavoritas = req.session.cancionesFavoritas.filter(cancion => cancion._id.toString() !== canciones[0]._id.toString());
                 res.redirect("/favoritos");

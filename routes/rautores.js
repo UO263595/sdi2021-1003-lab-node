@@ -15,23 +15,29 @@ module.exports = function(app, swig, gestorBD) {
 
     app.get("/autores", function(req, res) {
         let respuesta = swig.renderFile('views/autores.html', {
-            autores : autores
+            autores : autores,
+            errores : req.session.errores
         });
+        req.session.errores=null;
         res.send(respuesta);
     });
 
     app.get('/autores/agregar', function (req, res) {
         let roles = ["cantante", "batería", "guitarrista", "bajista", "teclista"];
         let respuesta = swig.renderFile('views/autores-agregar.html', {
-            roles : roles
+            roles : roles,
+            errores : req.session.errores
         });
+        req.session.errores=null;
         res.send(respuesta);
     });
 
     app.get('/autores/filtrar/:rol', function(req, res) {
         let respuesta = swig.renderFile('views/autores.html', {
-            autores : autores.filter(autor => autor.rol === req.params.rol)
+            autores : autores.filter(autor => autor.rol === req.params.rol),
+            errores : req.session.errores
         });
+        req.session.errores=null;
         res.send(respuesta);
     });
 
@@ -48,10 +54,11 @@ module.exports = function(app, swig, gestorBD) {
         // Conectarse
         gestorBD.insertarAutor(autor, function(id) {
             if (id == null) {
-                let respuesta = swig.renderFile('views/error.html', {
-                    mensaje : "Error al insertar autor"
-                });
-                res.send(respuesta);
+                req.session.errores = {
+                    mensaje : "Error al insertar autor",
+                    tipoMensaje : "alert-danger"
+                }
+                res.redirect('/autores');
             } else {
                 res.redirect('/autores');
             }

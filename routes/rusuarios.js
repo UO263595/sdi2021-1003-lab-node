@@ -4,12 +4,18 @@ module.exports = function(app, swig, gestorBD) {
     });
 
     app.get("/registrarse", function(req, res) {
-        let respuesta = swig.renderFile('views/bregistro.html', {});
+        let respuesta = swig.renderFile('views/bregistro.html', {
+            errores : req.session.errores
+        });
+        req.session.errores=null;
         res.send(respuesta);
     });
 
     app.get("/identificarse", function(req, res) {
-        let respuesta = swig.renderFile('views/bidentificacion.html', {});
+        let respuesta = swig.renderFile('views/bidentificacion.html', {
+            errores : req.session.errores
+        });
+        req.session.errores=null;
         res.send(respuesta);
     });
 
@@ -22,15 +28,17 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { autor : req.session.usuario };
         gestorBD.obtenerCanciones(criterio, function(canciones) {
             if (canciones == null) {
-                let respuesta = swig.renderFile('views/error.html', {
-                    mensaje : "Error al listar"
-                });
-                res.send(respuesta);
+                req.session.errores = {
+                    mensaje : "Error al listar",
+                    tipoMensaje : "alert-danger"
+                }
+                res.redirect("/tienda");
             } else {
-                let respuesta = swig.renderFile('views/bpublicaciones.html',
-                    {
-                        canciones : canciones
-                    });
+                let respuesta = swig.renderFile('views/bpublicaciones.html', {
+                    canciones : canciones,
+                    errores : req.session.errores
+                });
+                req.session.errores=null;
                 res.send(respuesta);
             }
         });
@@ -45,10 +53,18 @@ module.exports = function(app, swig, gestorBD) {
         }
 
         gestorBD.insertarUsuario(usuario, function(id) {
-            if (id == null){
-                res.redirect("/registrarse?mensaje=Error al registrar usuario");
+            if (id == null) {
+                req.session.errores = {
+                    mensaje : "Error al registrar usuario",
+                    tipoMensaje : "alert-danger"
+                }
+                res.redirect("/identificarse");
             } else {
-                res.redirect("/identificarse?mensaje=Nuevo usuario registrado");
+                req.session.errores = {
+                    mensaje : "Nuevo usuario registrado",
+                    tipoMensaje : "alert-info"
+                }
+                res.redirect("/identificarse");
             }
         });
     });
@@ -63,7 +79,12 @@ module.exports = function(app, swig, gestorBD) {
         gestorBD.obtenerUsuarios(criterio, function(usuarios) {
             if (usuarios == null || usuarios.length == 0) {
                 req.session.usuario = null;
-                res.redirect("/identificarse"+"?mensaje=Email o password incorrecto"+"&tipoMensaje=alert-danger ");
+                req.session.errores = {
+                    mensaje : "Email o password incorrecto",
+                    tipoMensaje : "alert-danger"
+                }
+                res.redirect("/identificarse");
+                // res.redirect("/identificarse"+"?mensaje=Email o password incorrecto"+"&tipoMensaje=alert-danger ");
             } else {
                 req.session.usuario = usuarios[0].email;
                 req.session.cancionesFavoritas = [];
