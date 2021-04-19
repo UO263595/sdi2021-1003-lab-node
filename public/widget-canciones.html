@@ -6,7 +6,7 @@
         <thead>
         <tr>
             <th><a onclick="ordenarPorNombre()">Nombre</a></th>
-            <th>Genero</th>
+            <th><a onclick="ordenarPorGenero()">Género</a></th>
             <th><a onclick="ordenarPorPrecio()">Precio</a></th>
             <th class="col-md-1"></th>
         </tr>
@@ -79,16 +79,7 @@
     }
     var precioDsc = true;
     function ordenarPorPrecio() {
-        /*
-        canciones.sort(function(a, b) {
-            if (parseFloat(a.precio) > parseFloat(b.precio)) return -1;
-            if (parseFloat(a.precio) < parseFloat(b.precio)) return 1;
-            return 0
-            // Dependiendo de retorno >0 =0 o <0
-        });
-        actualizarTabla(canciones);
-        */
-        if (precioDsc){
+        if (precioDsc) {
             canciones.sort(function(a, b) {
                 return parseFloat(a.precio) - parseFloat(b.precio);
             });
@@ -100,13 +91,41 @@
         actualizarTabla(canciones);
         precioDsc = !precioDsc; //invertir
     }
-    function ordenarPorNombre(){
-        canciones.sort(function(a, b) {
-            if(a.nombre > b.nombre ) return 1;
-            if(a.nombre < b.nombre ) return -1;
-            return 0;
-        });
+    var nombreAsc = true;
+    function ordenarPorNombre() {
+        if (nombreAsc) {
+            canciones.sort(function(a, b) {
+                if(a.nombre > b.nombre ) return 1;
+                if(a.nombre < b.nombre ) return -1;
+                return 0;
+            });
+        } else {
+            canciones.sort(function(a, b) {
+                if(a.nombre > b.nombre ) return -1;
+                if(a.nombre < b.nombre ) return 1;
+                return 0;
+            });
+        }
         actualizarTabla(canciones);
+        nombreAsc = !nombreAsc; //invertir
+    }
+    var generoAsc = true;
+    function ordenarPorGenero() {
+        if (generoAsc) {
+            canciones.sort(function (a, b) {
+                if (a.genero > b.genero) return 1;
+                if (a.genero < b.genero) return -1;
+                return 0;
+            });
+        } else {
+            canciones.sort(function (a, b) {
+                if (a.genero > b.genero) return -1;
+                if (a.genero < b.genero) return 1;
+                return 0;
+            });
+        }
+        actualizarTabla(canciones);
+        generoAsc = !generoAsc; //invertir
     }
     setInterval(function() {
         cargarCanciones();
