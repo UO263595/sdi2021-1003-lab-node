@@ -22,30 +22,8 @@
     </div>
     <div class="col-sm-offset-2 col-sm-10">
         <button type="button" class="btn btn-primary" id="boton-agregar"
-                onclick="agregarCancion()">Agregar</button>
+                onclick="agregar()">Agregar</button>
     </div>
 </div>
 
-<script>
-    function agregarCancion( ) {
-        $.ajax({
-            url: URLbase + "/cancion",
-            type: "POST",
-            data: {
-                nombre : $("#agregar-nombre").val(),
-                genero : $("#agregar-genero").val(),
-                precio : $("#agregar-precio").val()
-            },
-            dataType: 'json',
-            headers: { "token": token },
-            success: function(respuesta) {
-                console.log(respuesta); // <-- Prueba
-                $( "#contenedor-principal" ).load( "widget-canciones.html");
-
-            },
-            error : function (error){
-                $( "#contenedor-principal" ).load("widget-login.html");
-            }
-        });
-    }
-</script>
+<script type='text/javascript' src='/js/agregar.js'></script>

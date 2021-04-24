@@ -15,10 +15,7 @@ module.exports = function(app, swig) {
                 res.send(respuesta);
             })
         } else {
-            let respuesta = swig.renderFile('views/artista.html',
-                {
-                    nombre: "Realiza una búsqueda"
-                });
+            let respuesta = swig.renderFile('views/artista.html',{});
             res.send(respuesta);
         }
     });
