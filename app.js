@@ -189,6 +189,7 @@ require("./routes/rautores.js")(app, swig, gestorBD); // (app, param1, param2, e
 require("./routes/rcomentarios.js")(app, swig, gestorBD);
 require("./routes/rfavoritos.js")(app, swig, gestorBD);
 require("./routes/rapicanciones.js")(app, gestorBD);
+require("./routes/rartistas.js")(app, swig);
 
 app.use(function(err, req, res, next) {
     console.log("Error producido: " + err); // mostramos el error en consola

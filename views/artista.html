@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %} Tienda – uoMusic {% endblock %}
+{% block contenido_principal %}
+<!-- Búsqueda -->
+<div class="row">
+    <div id="custom-search-input ">
+        <form method="get" action="/artista" >
+            <div
+                    class="input-group col-xs-8 col-sm-6 col-md-4 col-lg-5 pull-right">
+                <input type="text" class="search-query form-control"
+                       placeholder="Nombre del artista" name="busqueda"/>
+                <span class="input-group-btn">
+                <button class="btn" type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+                </button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<h2>Artista</h2>
+<div class="row">
+    {% if nombre != null %}
+        <p>{{ nombre }}</p>
+        <p>{{ informacion }}</p>
+        <a href="{{ musica }}">Escuchar su música</a>
+    {% else %}
+        <p>Busca algún artista.</p>
+    {% endif %}
+</div>
+{% endblock %}
